@@ -1,0 +1,24 @@
+{
+    "forgotPasswordPublisher": {
+        "exchange": {
+            "name": "auth-exchange-topic",
+            "type": "topic",
+            "routingKey": "forgotPass.email",
+            "options": {
+                "durable": false
+            }
+        },
+        "queues": [
+            {
+                "name": "email",
+                "routingKey": "*.email",
+                "options": {
+                    "durable": true
+                },
+                "consumeOptions": {
+                    "noAck": true
+                }
+            }
+        ]
+    }
+}

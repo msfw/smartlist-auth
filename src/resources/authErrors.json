@@ -1,0 +1,42 @@
+{
+    "createUserFailed": {
+        "userExists": {
+            "status": 400,
+            "description": "Already exists an user with this email."
+        },
+        "registerFailed": {
+            "status": 400,
+            "description": "Error while register new user."
+        }
+    },
+    "authenticationFailed": {
+        "userNotFound": {
+            "status": 400,
+            "description": "User not found."
+        },
+        "invalidPassword": {
+            "status": 400,
+            "description": "Invalid password."
+        }
+    },
+    "forgotPasswordFailed": {
+        "userNotFound": {
+            "status": 400,
+            "description": "User not found."
+        }
+    },
+    "resetPasswordFailed": {
+        "userNotFound": {
+            "status": 400,
+            "description": "User not found."
+        },
+        "invalidToken": {
+            "status": 401,
+            "description": "Invalid reset password token."
+        },
+        "tokenExpired": {
+            "status": 400,
+            "description": "Token expired."
+        }
+    }
+}
