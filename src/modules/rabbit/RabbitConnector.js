@@ -1,5 +1,5 @@
 const amqp = require('amqplib/callback_api')
-const rabbitUrl = `amqp://${process.env.RABBIT_SERVER}:${process.env.RABBIT_PORT}`
+const rabbitUrl = process.env.CLOUDAMQP_URL || 'amqp://rabbitmq:5672'
 
 const rabbitProcessor = (rabbitCommand, isSubscriber = false) => {
     amqp.connect(rabbitUrl, (err, connection) => {
