@@ -106,7 +106,7 @@ module.exports = {
             publisherAuth(JSON.stringify({
                 to: email,
                 subject: 'Forgot Password',
-                template: 'ForgotPassword',
+                template: 'forgot_password',
                 context: { token }
             }), messaging.forgotPasswordPublisher.queues, messaging.forgotPasswordPublisher.exchange)
                 .catch(err => console.log(err));
