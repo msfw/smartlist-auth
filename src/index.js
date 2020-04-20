@@ -8,7 +8,10 @@ const routes = require('./routes');
 const app = express();
 
 const site = process.env.ALLOW_FROM_URL;
-app.use(cors());
+app.use(cors({
+    origin: site,
+    optionsSuccessStatus: 200 
+}));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(routes);
