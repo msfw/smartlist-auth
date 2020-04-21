@@ -5,7 +5,8 @@ const mongoose = require('../../database/index')
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true
+        require: true,
+        select: false
     },
     email: {
         type: String,

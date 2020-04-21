@@ -88,7 +88,7 @@ module.exports = {
 
         try {
 
-            const user = await User.findOne({ email })
+            const user = await User.findOne({ email }).select('+name')
 
             if (!user)
                 res.status(forgotPasswordErros.status).send(forgotPasswordErros.description)
@@ -106,8 +106,8 @@ module.exports = {
             publisherAuth(JSON.stringify({
                 to: email,
                 subject: 'Forgot Password',
-                template: 'forgot_password',
-                context: { token }
+                template: 'forgot password',
+                context: { token, name: user.name }
             }), messaging.forgotPasswordPublisher.queues, messaging.forgotPasswordPublisher.exchange)
                 .catch(err => console.log(err));
 
