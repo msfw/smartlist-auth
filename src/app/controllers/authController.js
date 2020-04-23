@@ -56,7 +56,7 @@ module.exports = {
     },
 
     async resetPassword(req, res) {
-        const { email, token, password } = req.body;
+        const { email, token, password, manualReset = false } = req.body;
         const resetPasswordErrors = authErrors.resetPasswordFailed;
     
         try {
@@ -65,12 +65,14 @@ module.exports = {
             if (!user)
                 res.status(resetPasswordErrors.userNotFound.status).send(resetPasswordErrors.userNotFound.description)
     
-            if (user.passwordResetToken != token)
-                res.status(resetPasswordErrors.invalidToken.status).send(resetPasswordErrors.invalidToken.description)
-    
-            if (Date.now() > user.passowordResetExpires)
-                res.status(resetPasswordErrors.tokenExpired.status).send(resetPasswordErrors.tokenExpired.description)
-    
+            if (!manualReset) {
+                if (user.passwordResetToken != token)
+                    res.status(resetPasswordErrors.invalidToken.status).send(resetPasswordErrors.invalidToken.description)
+        
+                if (Date.now() > user.passowordResetExpires)
+                    res.status(resetPasswordErrors.tokenExpired.status).send(resetPasswordErrors.tokenExpired.description)
+            }
+
             user.password = password;
     
             await user.save();
