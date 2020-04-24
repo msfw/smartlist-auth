@@ -4,7 +4,7 @@ module.exports = {
     async UserExists(User, conditions) {
         return User.findOne(conditions);
     },
-    async IsValidUserPassword(passwordFromBodyRequest, passwordFromDatabase) {
+    async IsValidUserPassword(passwordFromBodyRequest, passwordFromDatabase) {        
         return bcrypt.compare(passwordFromBodyRequest, passwordFromDatabase);
     }
 }

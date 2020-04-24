@@ -5,6 +5,7 @@ const messaging = require('../../config/queues')
 const publisherAuth = require('../../modules/rabbit/publisher/PublisherBase')
 const authErrors = require('../../resources/authErrors')
 const authValidations = require('../../validations/authValidation')
+const bcrypt = require('bcryptjs')
 
 const generateToken = (params = {}) => {
     return jwt.sign(params, process.env.SHARED_SERVICES_INFO_SECRET, {
@@ -56,31 +57,45 @@ module.exports = {
     },
 
     async resetPassword(req, res) {
-        const { email, token, password, manualReset = false } = req.body;
+        const { email, token, newPassword, oldPassword = '', manualReset = false } = req.body;
+        console.log(req.body)
         const resetPasswordErrors = authErrors.resetPasswordFailed;
-    
+
         try {
-            const user = await User.findOne({ email }).select('+passwordResetToken passwordResetExpires')
-    
+            const user = await User.findOne({ email }).select('+passwordResetToken passwordResetExpires password')
+
+
             if (!user)
                 res.status(resetPasswordErrors.userNotFound.status).send(resetPasswordErrors.userNotFound.description)
-    
+
             if (!manualReset) {
+                
+                if (!token)
+                    res.status(resetPasswordErrors.resetPassTokenRequired.status)
+                        .send(resetPasswordErrors.resetPassTokenRequired.description)
+
                 if (user.passwordResetToken != token)
-                    res.status(resetPasswordErrors.invalidToken.status).send(resetPasswordErrors.invalidToken.description)
-        
+                    res.status(resetPasswordErrors.invalidToken.status)
+                        .send(resetPasswordErrors.invalidToken.description)
+
                 if (Date.now() > user.passowordResetExpires)
-                    res.status(resetPasswordErrors.tokenExpired.status).send(resetPasswordErrors.tokenExpired.description)
+                    res.status(resetPasswordErrors.tokenExpired.status)
+                        .send(resetPasswordErrors.tokenExpired.description)
+
+            } else {
+                if (!await authValidations.IsValidUserPassword(oldPassword, user.password))
+                    res.status(resetPasswordErrors.oldPassword.status)
+                        .send(resetPasswordErrors.oldPassword.description)
             }
 
-            user.password = password;
-    
+            user.password = newPassword;
+
             await user.save();
-    
+
             res.send()
-    
+
         } catch (error) {
-            res.status(400).send('Erro while trying to update password.')
+            res.status(400).send({ error: 'Erro while trying to update password.', details: error })
         }
     },
 

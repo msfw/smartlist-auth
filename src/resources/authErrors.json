@@ -30,6 +30,10 @@
             "status": 400,
             "description": "User not found."
         },
+        "resetPassTokenRequired":{
+            "status": 400,
+            "description": "Reset password token is required."
+        },
         "invalidToken": {
             "status": 401,
             "description": "Invalid reset password token."
@@ -37,6 +41,10 @@
         "tokenExpired": {
             "status": 400,
             "description": "Token expired."
+        },
+        "oldPassword": {
+            "status" : 400,
+            "description": "The old password isn't correct."
         }
     }
 }
