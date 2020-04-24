@@ -57,8 +57,7 @@ module.exports = {
     },
 
     async resetPassword(req, res) {
-        const { email, token, newPassword, oldPassword = '', manualReset = false } = req.body;
-        console.log(req.body)
+        const { email, token, newPassword, oldPassword = '', manualReset = false } = req.body;        
         const resetPasswordErrors = authErrors.resetPasswordFailed;
 
         try {
