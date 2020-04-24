@@ -1,0 +1,51 @@
+{
+	"createUserFailed": {
+		"userExists": {
+			"status": 400,
+			"description": "Já existe um usuário com este e-mail cadastrado."
+		},
+		"registerFailed": {
+			"status": 400,
+			"description": "Ocorreu um erro ao criar um novo usuário."
+		}
+	},
+	"authenticationFailed": {
+		"userNotFound": {
+			"status": 400,
+			"description": "Usuário não encontrado."
+		},
+		"invalidPassword": {
+			"status": 400,
+			"description": "Senha inválida."
+		}
+	},
+	"forgotPasswordFailed": {
+		"userNotFound": {
+			"status": 400,
+			"description": "Usuário não encontrado."
+		}
+	},
+	"resetPasswordErrors": {
+		"userNotFound": {
+			"status": 400,
+			"description": "Usuário não encontrado."
+		},
+		"resetPassTokenRequired": {
+			"status": 400,
+			"description": "O token de reset de senha é obrigatório."
+		},
+		"invalidToken": {
+			"status": 401,
+			"description": "Token de reset de senha inválido."
+		},
+		"tokenExpired": {
+			"status": 400,
+			"description": "Token expirado."
+		},
+		"oldPassword": {
+			"status": 400,
+			"description": "A senha antiga não está correta."
+		}
+	},
+	"resetPasswordFailed": "resetPasswordFailed"
+}

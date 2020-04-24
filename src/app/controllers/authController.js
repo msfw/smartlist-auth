@@ -3,9 +3,7 @@ const crypto = require('crypto')
 const User = require('../models/user')
 const messaging = require('../../config/queues')
 const publisherAuth = require('../../modules/rabbit/publisher/PublisherBase')
-const authErrors = require('../../resources/authErrors')
 const authValidations = require('../../validations/authValidation')
-const bcrypt = require('bcryptjs')
 
 const generateToken = (params = {}) => {
     return jwt.sign(params, process.env.SHARED_SERVICES_INFO_SECRET, {
@@ -20,7 +18,7 @@ module.exports = {
 
         try {
 
-            const { status, description } = authErrors.createUserFailed.userExists
+            const { status, description } = res.__('createUserFailed').userExists
 
             if (await authValidations.UserExists(User, { email }))
                 return res.status(status).send({ error: description })
@@ -31,7 +29,7 @@ module.exports = {
             return res.send({ user, token: generateToken({ id: user.id }) })
         } catch (error) {
 
-            const { status, description } = authErrors.createUserFailed.registerFailed
+            const { status, description } = res.__('createUserFailed').registerFailed
 
             res.status(status).send({ error: description })
         }
@@ -40,8 +38,9 @@ module.exports = {
     async authenticate(req, res) {
         const { email, password } = req.body;
         const user = await User.findOne({ email }).select('+password');
-        const userNotFoundErrors = authErrors.authenticationFailed.userNotFound;
-        const invalidPasswordErrors = authErrors.authenticationFailed.invalidPassword;
+        const authenticationFailed = res.__('authenticationFailed');
+        const userNotFoundErrors = authenticationFailed.userNotFound;
+        const invalidPasswordErrors = authenticationFailed.invalidPassword;
 
         if (!user)
             return res.status(userNotFoundErrors.status)
@@ -56,10 +55,10 @@ module.exports = {
         res.send({ user, token: generateToken({ id: user.id }) })
     },
 
-    async resetPassword(req, res) {
-        const { email, token, newPassword, oldPassword = '', manualReset = false } = req.body;        
-        const resetPasswordErrors = authErrors.resetPasswordFailed;
-
+    async resetPassword(req, res) {                
+        const { email, token, newPassword, oldPassword = '', manualReset = false } = req.body;  
+        const resetPasswordErrors = res.__('resetPasswordErrors');             
+        
         try {
             const user = await User.findOne({ email }).select('+passwordResetToken passwordResetExpires password')
 
@@ -100,7 +99,7 @@ module.exports = {
 
     async forgotPassword(req, res) {
         const { email } = req.body;
-        const forgotPasswordErros = authErrors.forgotPasswordFailed.userNotFound;
+        const forgotPasswordErros = res.__('forgotPasswordFailed').userNotFound;
 
         try {
 

@@ -25,7 +25,7 @@
             "description": "User not found."
         }
     },
-    "resetPasswordFailed": {
+    "resetPasswordErrors": {
         "userNotFound": {
             "status": 400,
             "description": "User not found."
