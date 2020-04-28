@@ -37,7 +37,7 @@ module.exports = {
 
     async authenticate(req, res) {
         const { email, password } = req.body;
-        const user = await User.findOne({ email }).select('+password');
+        const user = await User.findOne({ email }).select('+password name');
         const authenticationFailed = res.__('authenticationFailed');
         const userNotFoundErrors = authenticationFailed.userNotFound;
         const invalidPasswordErrors = authenticationFailed.invalidPassword;
